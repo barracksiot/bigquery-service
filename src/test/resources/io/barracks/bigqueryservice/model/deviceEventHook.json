@@ -1,0 +1,44 @@
+{
+  "deviceEvent": {
+    "request": {
+      "unitId": "ID transmitted by the device",
+      "userId": "Unique ID for the user",
+      "segmentId": "ID of the segment",
+      "versionId": "Version of the device",
+      "userAgent": "Version of the SDK installed on the device that sent the information",
+      "ipAddress": "IP address of the device",
+      "packages": [
+        {
+          "reference": "Reference of the first package",
+          "version": "Version for the first package"
+        },
+        {
+          "reference": "Reference of the second package",
+          "version": "Version for the second package"
+        }
+      ],
+      "customClientData": {}
+    },
+    "response": {
+      "changed":[],
+      "unchanged":[],
+      "available":[],
+      "unavailable":[]
+    }
+  },
+  "hook": {
+    "name": "The name of this hook",
+    "googleClientSecret": {
+      "type": "service_account",
+      "project_id": "ID of the project",
+      "private_key_id": "ID of the user's private key",
+      "private_key": "User's google private key",
+      "client_email": "Email of the user",
+      "client_id": "User's ID",
+      "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+      "token_uri": "https://accounts.google.com/o/oauth2/token",
+      "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+      "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/105693303195-compute%40developer.gserviceaccount.com"
+    }
+  }
+}

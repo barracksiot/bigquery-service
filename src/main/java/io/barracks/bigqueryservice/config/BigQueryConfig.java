@@ -1,0 +1,64 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2017 Barracks Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+package io.barracks.bigqueryservice.config;
+
+import com.google.api.gax.core.RetrySettings;
+import com.google.cloud.HttpTransportOptions;
+import com.google.cloud.bigquery.BigQuery;
+import com.google.cloud.bigquery.BigQueryOptions;
+import org.joda.time.Duration;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class BigQueryConfig {
+
+    private static RetrySettings retrySettings() {
+        return RetrySettings.newBuilder().setMaxAttempts(10)
+                .setMaxRetryDelay(Duration.millis(1000L))
+                .setTotalTimeout(Duration.millis(2000L))
+                .setInitialRetryDelay(Duration.millis(250L))
+                .setRetryDelayMultiplier(1.0)
+                .setInitialRpcTimeout(Duration.millis(2000L))
+                .setRpcTimeoutMultiplier(1.0)
+                .setMaxRpcTimeout(Duration.millis(2000L))
+                .build();
+    }
+
+    @Bean
+    public BigQuery initializeBigQuery() {
+        final HttpTransportOptions transportOptions = BigQueryOptions.getDefaultHttpTransportOptions().toBuilder()
+                .setConnectTimeout(2000)
+                .setReadTimeout(2000)
+                .build();
+        final BigQuery bigQuery = BigQueryOptions.newBuilder()
+                .setTransportOptions(transportOptions)
+                .setRetrySettings(retrySettings())
+                .setProjectId("DefaultProjectId")
+                .build()
+                .getService();
+        return bigQuery;
+    }
+}
